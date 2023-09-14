@@ -19,9 +19,12 @@ const applySwapiEndpoints = (server, app) => {
     server.get('/hfswapi/getPeople/:id', async (req, res) => {
        try {
         const id = req.params['id'];
-        let  people = await peopleFactory(id, '');
+        const lang = req.query['lang'] || '';
+        let  people = await peopleFactory(id, lang);
+        console.log(people);
         res.json(people);
        } catch (error) {
+        console.log(error);
         res.sendStatus(501);
        }
     });
