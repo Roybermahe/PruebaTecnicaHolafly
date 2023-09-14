@@ -8,7 +8,6 @@ class AbstractPeople {
     }
 
     async init(){
-       await db.populateDB();
        const people = await db.swPeople.findOne({ where: { id: this.id }});
        if(people) {
         this.id = people.id;
