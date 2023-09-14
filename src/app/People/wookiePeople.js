@@ -1,5 +1,4 @@
 const AbstractPeople = require("./abstractPeople");
-const db = require('../db');
 const app = require('..');
 const format = '/?format=wookiee'
 class WookiePeople  extends AbstractPeople {
