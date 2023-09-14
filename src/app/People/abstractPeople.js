@@ -1,4 +1,5 @@
 const db = require('../db');
+const app = require('..');
 class AbstractPeople {
 
     constructor(id) {
@@ -12,12 +13,22 @@ class AbstractPeople {
        if(people) {
         this.id = people.id;
         this.mass = people.mass;
-        this.getHeight = people.height;
-        this.getHomeworlId= people.homeworld_id;
+        this.height = people.height;
+        this.homeworlId= people.homeworld_id;
         this.name = people.name;
         this.homeworldName = people.homeworld_name;
        } else {
-        this.id = null;
+        const peopleSwapi = await app.swapiFunctions.genericRequest('https://swapi.dev/api/people/'+this.id, 'GET', null, true );
+        const planetSwapi = await app.swapiFunctions.genericRequest(peopleSwapi.homeworld, 'GET', null, true );
+        const { mass, height, name, homeworld } = peopleSwapi;
+        this.mass = mass;
+        this.height = height;
+        this.name = name;
+        this.homeworlId= homeworld.split('https://swapi.dev/api')[1];
+        this.homeworldName = planetSwapi.name;
+        await db.swPeople.create({
+            id: this.id, mass, height, name, homeworld_id: this.homeworlId, homeworld_name: this.homeworldName
+        })
        }
     }
 
