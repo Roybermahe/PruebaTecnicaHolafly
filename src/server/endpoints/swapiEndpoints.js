@@ -24,7 +24,7 @@ const applySwapiEndpoints = (server, app) => {
         console.log(people);
         res.json(people);
        } catch (error) {
-        console.log(error);
+        console.log(error); //TO DO: Remove in last versions 
         res.sendStatus(501);
        }
     });
