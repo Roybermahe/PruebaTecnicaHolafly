@@ -1,10 +1,25 @@
+const db = require("../db");
+const app = require('..')
 class Planet {
     constructor(id){
-        throw new Error('To be implemented');
+        this.id = id;
     }
 
     async init(){
-        throw new Error('To be implemented');
+       const planet = await db.swPlanet.findOne({ where: { id: this.id }});
+       if(planet) {
+        const { name, gravity} = planet;
+        this.name = name;
+        this.gravity = gravity;
+       } else {
+        const planetSwapi = await app.swapiFunctions.genericRequest('https://swapi.dev/api/planets/'+this.id, 'GET', null, true);
+        const { name, gravity} = planetSwapi;
+        this.name = name;
+        this.gravity = parseFloat(gravity.replace(/\D/g, ''));
+        await db.swPlanet.create({
+            id: this.id, name, gravity: this.gravity
+        })
+       }
     }
 
     getName() {
@@ -15,3 +30,5 @@ class Planet {
         return this.gravity;
     }
 }
+
+module.exports = Planet;
