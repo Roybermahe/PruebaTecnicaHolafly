@@ -58,7 +58,7 @@ class AbstractPeople {
     }
 
     async getWeightOnPlanet(planetId){
-        const natalId = +this.homeworlId.split('/planets/')[1];
+        const natalId = this.homeworlId.replace(/\D/g, '');
         if(+natalId === +planetId) {
             throw new Error('No se puede calcular el peso en el planeta natal del personaje.');
         } else {
