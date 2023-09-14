@@ -80,4 +80,8 @@ db.populateDB = populateDB;
 db.watchDB = watchDB;
 db.deleteDB = deleteDB;
 
+db.initDB().then(() =>{
+  db.populateDB().then();
+});
+
 module.exports = db;
