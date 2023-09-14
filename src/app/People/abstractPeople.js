@@ -64,7 +64,7 @@ class AbstractPeople {
         } else {
             const planet = new Planet(planetId);
             await planet.init();
-            return { weightOnPlanet: (+this.mass) * (+planet.gravity)};
+            return { weightOnPlanet: app.swapiFunctions.getWeightOnPlanet(+this.getMass(), +planet.getGravity())};
         }
     }
 }
