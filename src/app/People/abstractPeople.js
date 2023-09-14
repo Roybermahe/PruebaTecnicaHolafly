@@ -1,5 +1,6 @@
 const db = require('../db');
 const app = require('..');
+const { Planet } = require('../Planet');
 class AbstractPeople {
 
     constructor(id) {
@@ -56,8 +57,15 @@ class AbstractPeople {
         return this.homeworlId;
     }
 
-    getWeightOnPlanet(planetId){
-        throw new Error('To be implemented');
+    async getWeightOnPlanet(planetId){
+        const natalId = +this.homeworlId.split('/planets/')[1];
+        if(+natalId === +planetId) {
+            throw new Error('No se puede calcular el peso en el planeta natal del personaje.');
+        } else {
+            const planet = new Planet(planetId);
+            await planet.init();
+            return { weightOnPlanet: (+this.mass) * (+planet.gravity)};
+        }
     }
 }
 
