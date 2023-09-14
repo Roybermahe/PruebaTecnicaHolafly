@@ -1,3 +1,4 @@
+const { peopleFactory } = require("../../app/People");
 
 const _isWookieeFormat = (req) => {
     if(req.query.format && req.query.format == 'wookiee'){
@@ -15,11 +16,10 @@ const applySwapiEndpoints = (server, app) => {
     });
 
     server.get('/hfswapi/getPeople/:id', async (req, res) => {
-        // primero consultamos a la api y vemos si nos trae los datos respectivamente
        try {
         const id = req.params['id'];
-        const data = await app.swapiFunctions.genericRequest('https://swapi.dev/api/people/'+id, 'GET', null, true );
-        res.send(data);
+        let  people = await peopleFactory(id, '');
+        res.json(people);
        } catch (error) {
         res.sendStatus(501);
        }
