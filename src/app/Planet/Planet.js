@@ -1,4 +1,3 @@
-const db = require("../db");
 const app = require('..')
 class Planet {
     constructor(id){
@@ -6,7 +5,7 @@ class Planet {
     }
 
     async init(){
-       const planet = await db.swPlanet.findOne({ where: { id: this.id }});
+       const planet = await app.db.swPlanet.findOne({ where: { id: this.id }});
        if(planet) {
         const { name, gravity} = planet;
         this.name = name;
@@ -16,7 +15,7 @@ class Planet {
         const { name, gravity} = planetSwapi;
         this.name = name;
         this.gravity = parseFloat(gravity.replace(/\D/g, ''));
-        await db.swPlanet.create({
+        await app.db.swPlanet.create({
             id: this.id, name, gravity: this.gravity
         })
        }
